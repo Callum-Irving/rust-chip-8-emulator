@@ -11,16 +11,16 @@ pub fn disassemble_opcode(pc: usize, opcode: u16) -> String {
             }
             _ => {
                 let addr = opcode & 0x0FFF;
-                format!("{: <10} #${:03x}", "SYS", addr)
+                format!("{: <10} ${:03x}", "SYS", addr)
             }
         },
         0x01 => {
             let addr = opcode & 0x0FFF;
-            format!("{: <10} #${:03x}", "JP", addr)
+            format!("{: <10} ${:03x}", "JP", addr)
         }
         0x02 => {
             let addr = opcode & 0x0FFF;
-            format!("{: <10} #${:03x}", "CALL", addr)
+            format!("{: <10} ${:03x}", "CALL", addr)
         }
         0x03 => {
             let reg = opcode >> 8 & 0x000F;
@@ -101,12 +101,12 @@ pub fn disassemble_opcode(pc: usize, opcode: u16) -> String {
             format!("{: <10} V{:01x}, V{:01x}", "SNE", regx, regy)
         }
         0x0a => {
-            let val = opcode & 0x0FFF;
-            format!("{: <10} I, #${:03x}", "LD", val)
+            let addr = opcode & 0x0FFF;
+            format!("{: <10} I, ${:03x}", "LD", addr)
         }
         0x0b => {
             let addr = opcode & 0x0FFF;
-            format!("{: <10} V0, #${:03x}", "JP", addr)
+            format!("{: <10} V0, ${:03x}", "JP", addr)
         }
         0x0c => {
             let reg = opcode >> 8 & 0x000F;
