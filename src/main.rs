@@ -38,7 +38,8 @@ fn main() {
     let mut window =
         Window::new("Chip 8 Emulator", WIDTH, HEIGHT, opts).unwrap_or_else(|e| panic!("{}", e));
 
-    // window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
+    // TODO: Calibrate
+    window.limit_update_rate(Some(std::time::Duration::from_micros(1500)));
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         // Keypad layout:
