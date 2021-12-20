@@ -7,6 +7,7 @@ impl Chip8 {
     /// Clear the display.
     pub(super) fn op_00e0(&mut self) {
         self.display = [0; WIDTH * HEIGHT];
+        self.draw_flag = true;
     }
 
     /// 00EE - RET
@@ -174,9 +175,15 @@ impl Chip8 {
     /// Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
     pub(super) fn op_dxyn(&mut self, x: usize, y: usize, nibble: u8) {
         for byte in 0..nibble {
-            let sprite_y = (self.v[y] + byte) as usize % HEIGHT;
+            let sprite_y = (self.v[y] + byte) as usize;
+            if sprite_y >= HEIGHT {
+                break;
+            }
             for bit in 0..8 {
-                let sprite_x = (self.v[x] + bit) as usize % WIDTH;
+                let sprite_x = (self.v[x] + bit) as usize;
+                if sprite_x >= WIDTH {
+                    break;
+                }
                 let pixel = (self.memory[self.i + byte as usize] >> (7 - bit)) & 1;
                 self.v[0x0F] |=
                     pixel & (self.display[sprite_y * WIDTH + sprite_x] == u32::MAX) as u8;
